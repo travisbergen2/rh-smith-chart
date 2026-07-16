@@ -1,0 +1,111 @@
+{
+ "D_max": 2000,
+ "N0": {
+  "li_min": 0.06664012790840165,
+  "toeplitz_min": 9.830702487199386e-08,
+  "pass": true
+ },
+ "targets": {
+  "14.134725": 14.134725142,
+  "98.831194": 98.831194218,
+  "999.791572": 999.791571557
+ },
+ "cells": [
+  {
+   "gamma_star": 14.134725142,
+   "eps": 0.1,
+   "N_det_li": 1244,
+   "N_det_toeplitz": 87,
+   "mu_min_at_end": -104518.78516942968,
+   "d_n_min_over_sd": -4.494825137438922
+  },
+  {
+   "gamma_star": 14.134725142,
+   "eps": 0.05,
+   "N_det_li": null,
+   "N_det_toeplitz": 162,
+   "mu_min_at_end": -1320.403079379429,
+   "d_n_min_over_sd": -1.8062308103484441
+  },
+  {
+   "gamma_star": 14.134725142,
+   "eps": 0.02,
+   "N_det_li": null,
+   "N_det_toeplitz": 272,
+   "mu_min_at_end": -77.42152138956648,
+   "d_n_min_over_sd": -1.0935677534474464
+  },
+  {
+   "gamma_star": 14.134725142,
+   "eps": 0.01,
+   "N_det_li": null,
+   "N_det_toeplitz": 387,
+   "mu_min_at_end": -16.4144505229013,
+   "d_n_min_over_sd": -0.9969288877677341
+  },
+  {
+   "gamma_star": 98.831194218,
+   "eps": 0.1,
+   "N_det_li": null,
+   "N_det_toeplitz": 272,
+   "mu_min_at_end": -6878.811500683458,
+   "d_n_min_over_sd": -0.6479741820244603
+  },
+  {
+   "gamma_star": 98.831194218,
+   "eps": 0.05,
+   "N_det_li": null,
+   "N_det_toeplitz": 437,
+   "mu_min_at_end": -86.85189803653245,
+   "d_n_min_over_sd": -0.6470786557201221
+  },
+  {
+   "gamma_star": 98.831194218,
+   "eps": 0.02,
+   "N_det_li": null,
+   "N_det_toeplitz": 817,
+   "mu_min_at_end": -5.029080642291733,
+   "d_n_min_over_sd": -0.6468279144840045
+  },
+  {
+   "gamma_star": 98.831194218,
+   "eps": 0.01,
+   "N_det_li": null,
+   "N_det_toeplitz": 1167,
+   "mu_min_at_end": -1.0236755997496434,
+   "d_n_min_over_sd": -0.6467920945260417
+  },
+  {
+   "gamma_star": 999.791571557,
+   "eps": 0.1,
+   "N_det_li": null,
+   "N_det_toeplitz": 882,
+   "mu_min_at_end": -3.3096942174569115,
+   "d_n_min_over_sd": -0.6510001406943584
+  },
+  {
+   "gamma_star": 999.791571557,
+   "eps": 0.05,
+   "N_det_li": null,
+   "N_det_toeplitz": 1257,
+   "mu_min_at_end": -0.03733302507868791,
+   "d_n_min_over_sd": -0.6509999371226415
+  },
+  {
+   "gamma_star": 999.791571557,
+   "eps": 0.02,
+   "N_det_li": null,
+   "N_det_toeplitz": 1837,
+   "mu_min_at_end": -0.0007580986750298868,
+   "d_n_min_over_sd": -0.6509998801231347
+  },
+  {
+   "gamma_star": 999.791571557,
+   "eps": 0.01,
+   "N_det_li": null,
+   "N_det_toeplitz": null,
+   "mu_min_at_end": 1.639714154937249e-07,
+   "d_n_min_over_sd": -0.6509998719803479
+  }
+ ]
+}

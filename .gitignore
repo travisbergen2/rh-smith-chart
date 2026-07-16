@@ -1,0 +1,6 @@
+data/zeros*.txt
+data/*.npz
+*.aux
+*.log
+*.out
+rh_smith_bundle.tar.gz

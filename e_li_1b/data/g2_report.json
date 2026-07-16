@@ -1,0 +1,12 @@
+{
+ "n_zeros_full": 2001052,
+ "T_full": 1132490.658714411,
+ "n_zeros_half": 938060,
+ "T_half": 566245.3293572055,
+ "max_rel_s": 3.66061360086146e-08,
+ "first_s_violation_n": null,
+ "max_rel_t": 0.0016434207592847122,
+ "first_t_violation_M": null,
+ "binding_D_max": 2000,
+ "feasible": true
+}

@@ -1,0 +1,254 @@
+{
+ "G3a": {
+  "exact_by_algebra": true,
+  "numerical_spot": [
+   {
+    "gamma_star": 14.134725142,
+    "c": 0.001,
+    "max_rel_dev": 1.7857851595380535e-12
+   },
+   {
+    "gamma_star": 14.134725142,
+    "c": 1000.0,
+    "max_rel_dev": 1.4799170691423956e-12
+   },
+   {
+    "gamma_star": 98.831194218,
+    "c": 0.001,
+    "max_rel_dev": 1.0272243835318499e-11
+   },
+   {
+    "gamma_star": 98.831194218,
+    "c": 1000.0,
+    "max_rel_dev": 7.133909019903978e-12
+   }
+  ],
+  "pass": true
+ },
+ "G3b": {
+  "substitute_per_deviations_entry_3": true,
+  "baseline_fidelity": "G1 PASS 1.5e-8; G2 stability recorded",
+  "pairing_variant_flips": [],
+  "pass": true
+ },
+ "G3c": {
+  "note": "alt normalization mu_min/mu_max is sign-preserving; detection via indefiniteness (mu<0) is normalization-invariant. Table compares primary vs sign-only depth.",
+  "table": [
+   {
+    "cell": [
+     14.134725142,
+     0.1
+    ],
+    "N_primary": 87,
+    "N_sign_only": 87
+   },
+   {
+    "cell": [
+     14.134725142,
+     0.05
+    ],
+    "N_primary": 162,
+    "N_sign_only": 162
+   },
+   {
+    "cell": [
+     14.134725142,
+     0.02
+    ],
+    "N_primary": 272,
+    "N_sign_only": 272
+   },
+   {
+    "cell": [
+     14.134725142,
+     0.01
+    ],
+    "N_primary": 387,
+    "N_sign_only": 387
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.1
+    ],
+    "N_primary": 272,
+    "N_sign_only": 272
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.05
+    ],
+    "N_primary": 437,
+    "N_sign_only": 437
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.02
+    ],
+    "N_primary": 817,
+    "N_sign_only": 817
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.01
+    ],
+    "N_primary": 1167,
+    "N_sign_only": 1167
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.1
+    ],
+    "N_primary": 882,
+    "N_sign_only": 882
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.05
+    ],
+    "N_primary": 1257,
+    "N_sign_only": 1257
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.02
+    ],
+    "N_primary": 1837,
+    "N_sign_only": 1837
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.01
+    ],
+    "N_primary": null,
+    "N_sign_only": null
+   }
+  ]
+ },
+ "G4": {
+  "cells": [
+   {
+    "cell": [
+     14.134725142,
+     0.1
+    ],
+    "seq_maxdev": 5.684341886080802e-14,
+    "mu_at_Ndet_ld": -0.0025761757787794476,
+    "mu_at_Ndet_64": -0.002576175778780424,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     14.134725142,
+     0.05
+    ],
+    "seq_maxdev": 2.6645352591003757e-15,
+    "mu_at_Ndet_ld": -0.004093281246596449,
+    "mu_at_Ndet_64": -0.004093281246597066,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     14.134725142,
+     0.02
+    ],
+    "seq_maxdev": 2.6645352591003757e-15,
+    "mu_at_Ndet_ld": -0.0023993499025796072,
+    "mu_at_Ndet_64": -0.002399349902581477,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     14.134725142,
+     0.01
+    ],
+    "seq_maxdev": 2.7200464103316335e-15,
+    "mu_at_Ndet_ld": -0.003340711206097529,
+    "mu_at_Ndet_64": -0.003340711206099169,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.1
+    ],
+    "seq_maxdev": 1.4210854715202004e-14,
+    "mu_at_Ndet_ld": -0.0015841323614874745,
+    "mu_at_Ndet_64": -0.0015841323614876788,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.05
+    ],
+    "seq_maxdev": 2.7200464103316335e-15,
+    "mu_at_Ndet_ld": -0.005800626367862749,
+    "mu_at_Ndet_64": -0.005800626367862971,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.02
+    ],
+    "seq_maxdev": 2.7200464103316335e-15,
+    "mu_at_Ndet_ld": -0.0001626820440851339,
+    "mu_at_Ndet_64": -0.0001626820440857287,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     98.831194218,
+     0.01
+    ],
+    "seq_maxdev": 2.7755575615628914e-15,
+    "mu_at_Ndet_ld": -0.0007881702259627313,
+    "mu_at_Ndet_64": -0.00078817022596355,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.1
+    ],
+    "seq_maxdev": 2.7200464103316335e-15,
+    "mu_at_Ndet_ld": -2.5541328300239017e-06,
+    "mu_at_Ndet_64": -2.554132829057919e-06,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.05
+    ],
+    "seq_maxdev": 2.6645352591003757e-15,
+    "mu_at_Ndet_ld": -9.431003002652112e-05,
+    "mu_at_Ndet_64": -9.431003002719874e-05,
+    "sign_agree": true
+   },
+   {
+    "cell": [
+     999.791571557,
+     0.02
+    ],
+    "seq_maxdev": 2.6645352591003757e-15,
+    "mu_at_Ndet_ld": -1.1243123887992324e-05,
+    "mu_at_Ndet_64": -1.1243123888066286e-05,
+    "sign_agree": true
+   }
+  ],
+  "pass": true
+ },
+ "jitter_spotcheck": {
+  "note": "full jitter uses a DIFFERENT random draw for head zeros than the windowed run (single stream over 2M vs head-only stream), so this compares scope + draw; the binding quantity is the tail-jitter contribution bounded analytically in entry 2. Reported ratio therefore OVERSTATES the tail effect.",
+  "max_dev_over_band_sd": 0.00015694984865454841
+ }
+}

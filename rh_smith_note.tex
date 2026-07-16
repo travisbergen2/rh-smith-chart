@@ -1,0 +1,282 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\gr}[1]{\textbf{[#1]}} % epistemic grade tag
+
+\title{A Smith Chart for the Riemann Hypothesis:\\
+\large The Cayley--Li Disk as a Unified Instrument Panel for Circle-Side Positivity\\[4pt]
+\normalsize IMM Open Series --- companion note to Paper 14 (number to be assigned)}
+\author{Travis Bergen\thanks{Independent researcher. ORCID 0009-0009-3950-8390.
+Prepared with agent assistance; all numerical claims reproducible from the committed
+scripts described in Appendix~\ref{app:repro}.}}
+\date{July 15, 2026 --- v0.2 draft (adds $\Theta_\omega$ meter row and E-LI-1b results)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent This note proves nothing about the Riemann Hypothesis and presents no evidence for
+or against it. Its subject is \emph{instrumentation}: we assemble, under one conformal
+coordinate system, the known ``circle-side'' positivity encodings of RH, in exact analogy
+with the Smith chart of radio-frequency engineering. The Smith chart is the M\"obius map
+$\Gamma=(Z-1)/(Z+1)$ folding the right half-plane of positive-real impedances into the unit
+disk, so that passivity becomes legible as geometry. Li's map $z=1-1/s$ performs the same
+fold on the critical strip: RH is exactly the statement that every nontrivial zero's image
+lies on the unit circle, and the Li coefficients $\lambda_n$ \gr{T: Li 1997;
+Bombieri--Lagarias 1999} and the Toeplitz truncations $A(m)$ of the truncated Weil form
+\gr{T: Paper 14} are the boundary gauges that would register a departure. Every entry of the
+resulting dictionary is graded; the underlying mathematics (M\"obius geometry, Herglotz/
+positive-real functions, de Branges canonical systems) is standard and credited, and the
+contribution claimed here is assembly and a working, tested instrument only. The instrument
+cross-validates against the pre-registered E-LI-1 run: a synthetic off-line quadruple at
+$\beta=0.1$, $\gamma\approx98.83$ drives $\mu_{\min}(T_M)<0$ first at $M=272$ in both
+implementations.
+\end{abstract}
+
+\section{The move, and why engineers made it first}
+
+A two-terminal electrical network is \emph{passive} iff its driving-point impedance $Z(s)$
+is a positive-real (Brune) function: analytic on the open right half-plane, real on the real
+axis, with $\Re Z(s)\ge 0$ for $\Re s>0$ \gr{T: Brune 1931}. The condition ``a function of a
+complex variable keeps a sign on an unbounded region'' is hostile to the eye and to finite
+measurement. Smith's 1939 solution was a change of coordinates: the M\"obius map
+\begin{equation}
+\Gamma \;=\; \frac{Z-1}{Z+1}
+\end{equation}
+sends the right half-plane bijectively onto the unit disk, the imaginary axis (lossless
+impedances) onto the unit circle, and the families $\{\Re Z=\text{const}\}$,
+$\{\Im Z=\text{const}\}$ onto two orthogonal families of circular arcs --- the familiar
+Smith grid. Positivity becomes containment: \emph{passive $\Leftrightarrow$ inside the disk;
+lossless $\Leftrightarrow$ on the rim}. Nothing is proved by the chart; everything becomes
+readable on it.
+
+The observation of this note is that the Riemann Hypothesis already possesses the identical
+compactification, scattered across three literatures, and that gathering it into one
+coordinate system with working gauges is cheap and useful.
+
+\section{The RH chart}
+
+\subsection{The map}
+
+Let $\xi$ be the completed zeta function and $\rho$ range over its nontrivial zeros. Li's
+criterion arises from the M\"obius change of variable
+\begin{equation}
+z \;=\; 1-\frac1s, \qquad s=\frac{1}{1-z},
+\label{eq:limap}
+\end{equation}
+which maps $s=\tfrac12$ to $z=-1$, $s=1$ to $z=0$, and $s=\infty$ to $z=1$.
+
+\begin{proposition}[chart geometry; \gr{T}]
+Under \eqref{eq:limap}, $|z| = |s-1|/|s|$. Hence the critical line $\Re s=\tfrac12$ maps
+onto the unit circle $|z|=1$ (minus the point $z=1$); the half-plane $\Re s>\tfrac12$ maps
+onto the \emph{interior} of the disk; $\Re s<\tfrac12$ onto the exterior. The families
+$\{\Re s=\sigma\}$ and $\{\Im s=\gamma\}$ map to circles through $z=1$ and orthogonal arcs
+respectively --- a Smith grid for the critical strip.
+\end{proposition}
+
+\begin{proof}
+$|z|=|1-1/s|=|s-1|/|s|$, and $|s-1|\lessgtr|s|$ according as $s$ is closer to $1$ than to
+$0$, i.e.\ according as $\Re s \gtrless \tfrac12$. M\"obius maps send lines to circles
+through the image of $\infty$, here $z=1$. \emph{Orientation is pinned by unit test}
+\texttt{test\_li\_map\_orientation}; the naive guess (right half maps outside) is wrong,
+and the first draft of that test failed for exactly that reason --- recorded here as a
+worked example of the verification discipline.
+\end{proof}
+
+RH, in chart coordinates \gr{A: restatement, no new content}: \emph{every zero is lossless}
+--- the image multiset $\{1-1/\rho\}$ lies on the rim, none strictly inside or outside.
+
+\subsection{The gauges are already circle-side objects}
+
+The point of the assembly is that both standing positivity encodings of RH in this program
+are statements \emph{about the chart}, not merely translatable to it.
+
+\textbf{Li gauge.} With $z_\rho:=1-1/\rho$ the Li coefficients are
+\begin{equation}
+\lambda_n=\sum_\rho\bigl(1-z_\rho^{\,n}\bigr),
+\end{equation}
+i.e.\ the $n$-th power sums of the charted zeros, and RH $\Leftrightarrow \lambda_n\ge0$ for
+all $n\ge1$ \gr{T: Li 1997; Bombieri--Lagarias 1999}. The base of Li's power sum \emph{is}
+the charted zero: the chart is not an illustration of the Li criterion, it is its state
+space. Under RH, $\lambda_n\sim\tfrac n2\log n$ \gr{T: Lagarias}, which supplies the
+normalized margin $s_n=\lambda_n/(\tfrac n2\log(n+1))$ displayed by the instrument.
+
+\textbf{Toeplitz gauge.} Paper 14's sequence $A(m)$ (box basis at scale $\delta$, tent
+transform $B$) gives the truncated Weil form as a Toeplitz quadratic form; on the zero side
+$A_\zeta(m)=\sum_{\gamma>0}2B(\gamma)\cos(m\delta\gamma)$, and RH $\Leftrightarrow$
+$T_M=[A(i-j)]\succeq0$ for all $M,\delta$ \gr{T-conditional: Paper 14, at that paper's own
+earned grade}. Positive-definite Toeplitz sequences are exactly the Fourier coefficients of
+positive measures on the circle (Herglotz--Carath\'eodory--Toeplitz) \gr{T: classical} ---
+again intrinsically a circle-side object.
+
+An off-line zero $\tfrac12\pm\beta\pm i\gamma$ leaves the rim radially
+($|z|-1\ne0$, displacement computable in closed form) and enters the gauges as a
+$\cosh(m\delta\beta)$-growing term (Toeplitz) and a $(1-z^n)$ defect (Li) --- the two
+meters read the same geometric departure at different sensitivities, quantified in
+E-LI-1.
+
+\subsection{The impedance column is also already present}
+
+The analogy runs deeper than the disk. The mathematical identity of a positive-real
+impedance is a Herglotz/Nevanlinna function, and the RH literature has its own: the Weyl
+$m$-function $m=B/A$ of a de Branges canonical system, meromorphic Herglotz, whose poles are
+the zeros of $A$ \gr{T: de Branges theory}. Suzuki constructs, for the family
+$\Theta_\omega(z)=\xi(\tfrac12-\omega-iz)/\xi(\tfrac12+\omega-iz)$, explicit canonical
+systems (unconditionally for $\omega>1$) and states the target criterion: RH as
+\emph{positive semidefiniteness of the family of Hamiltonians} \gr{T: Suzuki,
+arXiv:1204.1827, for $\omega>1$; Open for the extension}. In network terms: RH is the
+assertion that a specific one-port is passive --- the network synthesis literature
+(Brune cycles, Kalman--Yakubovich--Popov positivity) and the canonical-system literature are
+studying the same function class from opposite ends \gr{T: both classes equal
+Herglotz/positive-real up to rotation; A: any suggestion that synthesis \emph{techniques}
+transfer}.
+
+\section{The dictionary, graded}
+
+\begin{center}
+\small
+\begin{tabular}{p{4.6cm}p{5.6cm}l}
+\toprule
+Smith chart (RF) & RH chart & grade \\
+\midrule
+Cayley map $\Gamma=\frac{Z-1}{Z+1}$, RHP $\to$ disk & Li map $z=1-1/s$, $\Re s>\tfrac12\to$ interior & \gr{T} \\[2pt]
+positive-real (Brune) impedance & Herglotz function / Weyl $m$-function of a canonical system attached to $\xi$ & \gr{T} \\[2pt]
+passivity $\Leftrightarrow|\Gamma|\le1$ & RH $\Leftrightarrow$ all charted zeros satisfy $|z|=1$ & \gr{A}\,(restatement) \\[2pt]
+lossless network: interlaced imaginary poles/zeros & Hermite--Biehler structure, $A,B$ real interlaced zeros & \gr{T}\,(HB theory) \\[2pt]
+reflection coefficient at a frequency & charted zero $z_\rho=1-1/\rho$ = base of Li's power sum & \gr{T}\,(identity) \\[2pt]
+VSWR / return-loss meters & $\lambda_n$, $\mu_{\min}(T_M)$ positivity gauges & \gr{T} \\[2pt]
+all-pass filter: $|H(j\omega)|=1$, poles strictly stable & inner function $\Theta_\omega$: unimodular on $\mathbb R$; RH tied to no poles in $\mathbb C^+$ & \gr{T}\,(Blaschke; Suzuki) \\[2pt]
+matching: move the point to center & no analogue --- zeros cannot be moved; chart is read-only & \gr{A}\,(disanalogy) \\[2pt]
+finitely many readings certify a device & positivity needed at \emph{all} depths/windows; no finite certificate & \gr{Open}\,(= RH) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The last row is the honest core: a Smith chart certifies a \emph{given, finite} device
+because a physical one-port is determined by finitely many parameters. $\xi$ is not. The
+chart makes the ``forever'' structure of RH visible; it does not shorten it. Any use of this
+note's language that slides from row 3 (restatement) toward a claim of progress on row 8
+exceeds its derivation and is disclaimed in advance.
+
+\section{The instrument}
+
+A self-contained interactive chart (HTML/Plotly, dark-panel instrument idiom) accompanies
+this note, together with the generating library. Committed parameters: Odlyzko zero table,
+first $100{,}000$ zeros ($T\approx74{,}921$); $\delta=0.05$ (Paper 14 primary); display and
+gauge depth $n,M\le445$, the binding $D_{\max}$ measured by E-LI-1's tail-stability gate G2
+at this zero count. Displays: (i) the charted strip with Smith grid, first 60 zeros on the
+rim; (ii) normalized Li margin $s_n$; (iii) Toeplitz margin $\mu_{\min}(T_M)$, log scale;
+(iv) a planted synthetic quadruple $\tfrac12\pm0.1\pm i\,98.831$ (toggle), the honest
+detection cell identified by E-LI-1's post-hoc analysis.
+
+\textbf{Numerics} \gr{Numerics; truncated, labeled}. Zero-side truncated $\lambda_1=0.0230736$
+against the published $0.0230957\ldots$ \gr{T: Keiper--Li} --- the $9\times10^{-4}$ relative
+gap is the omitted tail, deliberately not patched here (the E-LI-1 pipeline carries the
+mpmath tail integral where gate-grade accuracy is needed). On the true zero set both gauges
+stay positive over the full depth range ($\mu_{\min}(T_{445})=4.84\times10^{-6}$). With the
+planted quadruple, $\mu_{\min}(T_M)<0$ first at $M=272$, agreeing exactly with E-LI-1's
+independently computed detection depth; the global Li margin does not resolve the same
+violation by depth 445, reproducing E-LI-1's measured sensitivity asymmetry (its post-hoc
+finding that the global $\lambda_n$ statistic has no single-zero power at this depth).
+
+\section{The gauges under load: the E-LI-1b comparison}
+
+After this note's first draft, the pre-registered experiment E-LI-1b (protocol registered
+2026-07-15, thresholds frozen before data; successor to E-LI-1 under its permitted
+follow-up clause) put all three meters through a powered planted-violation battery:
+12 cells ($\varepsilon\in\{0.1,0.05,0.02,0.01\}\times\gamma^*\in\{14.13,\,98.83,\,999.79\}$),
+first $2{,}001{,}052$ zeros (Odlyzko), depth $n,M\le2000$, mass-matched double-pair nulls
+(the control E-LI-1 lacked), seeds 6000--6019. All validity gates passed; the reproduction
+gate matched Paper 14's \S4 numerics to displayed digits. Registered verdict
+\gr{Numerics, pre-registered}: \textbf{Toeplitz wins} --- $11$ of $12$ cells resolved, the
+$A(m)$ gauge detected in all $11$ (every detection by genuine indefiniteness,
+$\mu_{\min}<0$, normalization-invariant), while the Li gauge --- even repaired to a
+differenced statistic with single-zero power --- detected in exactly one cell
+($\gamma^*=14.13$, $\varepsilon=0.1$, at $n=1244$ vs.\ Toeplitz's $M=87$). Detection-depth
+scaling followed the $\cosh(m\delta\varepsilon)$ mechanism, roughly
+$M_{\rm det}\propto 1/(\delta\varepsilon)$ with a $\gamma^{*2}$ height penalty from
+$B(\gamma)$.
+
+Two registered predictions failed and are reported as such. (i) The $\Theta_\omega$
+detection staircase is \emph{not} ``$\varepsilon>\omega$'': the measured law, exact in
+$72/72$ probe configurations, is $\varepsilon-\omega\ge v$ --- the planted pole must sit at
+or above the probe line $\Im z=v$; a pole below the probe line leaves $|\Theta_\omega|\le1$
+on it. The $\Theta_\omega$ gauge is therefore local in both coordinates, and an
+$\omega$-sweep must be paired with a downward $v$-sweep. (ii) The registered Li power
+estimate was optimistic by a factor $\sim1.7$ in one cell. Full protocol, deviations log
+(four entries, all declared before computation, spot-checks passed), gate outcomes, and
+machine-readable data accompany the repository.
+
+Instrument conclusion at earned grade: for violation \emph{detection} at these depths and
+$\delta=0.05$, the Toeplitz meter is decisively the more sensitive instrument, measured
+twice under two null designs; the Li meter's weakness is a property of its global statistic,
+not of the Li encoding as mathematics. None of this bears on the truth of RH.
+
+\section{Prior art and what is and is not new}
+
+Nothing in the mathematics of this note is new. The compactification is Li's (1997), with
+the arithmetic form by Bombieri--Lagarias (1999) and large-scale $\lambda_n$ computation by
+Ma\'slanka. The positive-real/Herglotz view of $\xi$ through canonical systems is de
+Branges's program, made explicit as a positivity-of-Hamiltonians criterion by Suzuki
+(arXiv:1204.1827); Lagarias's surveys connect the $m$-function language to zeta directly.
+The Toeplitz encoding is Paper 14 of this series. The line-side frontier (Weil positivity on
+the id\`ele class group, archimedean part proved) is Connes--Consani, arXiv:2006.13771, with
+the current operator-theoretic front in Connes--Consani--Moscovici, arXiv:2511.22755. What
+this note contributes: the assembled dictionary at explicit grades, the observation that
+both of this program's standing gauges are intrinsically objects of one disk coordinate
+system, and a tested, reproducible instrument that renders them together. Assembly is
+credited as assembly.
+
+\section{What the chart is for}
+
+Three concrete uses inside this program, none of which touch the truth of RH:
+(1) \emph{pedagogy and communication} --- the disk-with-rim picture states RH's content
+faster than any half-plane figure, and the planted-violation toggle shows what failure
+would look like on real gauges; (2) \emph{instrument selection} --- the chart is the natural
+cockpit for E-LI-1-style comparisons, and E-LI-1b's design notes (mass-matched nulls,
+deeper $D_{\max}$) can be read directly off its displays; (3) \emph{a common coordinate
+system} --- future circle-side encodings (inner functions $\Theta_\omega$, Schur/Carath\'eodory
+parametrizations) drop onto the same panel, so that ``which encoding detects sooner''
+questions stay commensurable.
+
+\appendix
+\section{Reproducibility}\label{app:repro}
+Workspace \texttt{rh\_smith/}: \texttt{core.py} (maps, $\lambda_n$, $A(m)$, Toeplitz
+$\mu_{\min}$; epistemic labels in docstrings), \texttt{make\_chart\_data.py} (all committed
+parameters), \texttt{build\_html.py} + \texttt{chart\_template.html} (instrument),
+\texttt{test\_core.py} (9 unit tests, all passing: map geometry and orientation, round-trip,
+classical Smith sanity, $\lambda_1$ reproduction envelope, positivity on true zeros,
+$B$-tent properties, planted-violation detection at $M\le301$). Zero data:
+Odlyzko, \texttt{zeros1} table. Runtime: full data generation $\approx11$\,s on the
+reference container.
+
+\begin{thebibliography}{9}\small
+\bibitem{Brune} O.~Brune, \emph{Synthesis of a finite two-terminal network whose
+driving-point impedance is a prescribed function of frequency}, J. Math. Phys. 10 (1931).
+\bibitem{Smith} P.~H.~Smith, \emph{Transmission line calculator}, Electronics 12 (1939).
+\bibitem{Li} X.-J.~Li, \emph{The positivity of a sequence of numbers and the Riemann
+hypothesis}, J. Number Theory 65 (1997) 325--333.
+\bibitem{BL} E.~Bombieri, J.~C.~Lagarias, \emph{Complements to Li's criterion for the
+Riemann hypothesis}, J. Number Theory 77 (1999) 274--287.
+\bibitem{Maslanka} K.~Ma\'slanka, \emph{Effective method of computing Li's coefficients and
+their properties}, arXiv:math/0402168.
+\bibitem{Suzuki} M.~Suzuki, \emph{A canonical system of differential equations arising from
+the Riemann zeta-function}, arXiv:1204.1827.
+\bibitem{CC} A.~Connes, C.~Consani, \emph{Weil positivity and trace formula: the archimedean
+place}, arXiv:2006.13771.
+\bibitem{P14} T.~Bergen, \emph{The Truncated Weil Form as a Toeplitz Sequence} (IMM Paper
+14), Zenodo, doi:10.5281/zenodo.20684022.
+\bibitem{ELI1} E-LI-1 protocol and results ledger (pre-registered, 2026-07-14), IMM working
+documents.
+\end{thebibliography}
+
+\end{document}
