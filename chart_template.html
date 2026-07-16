@@ -141,6 +141,47 @@
 </div>
 
 <div class="card" style="margin-top:20px">
+  <h2>VNA mode — the swept trace</h2>
+  <p class="note">
+    A vector network analyzer doesn't show one reflection point — it sweeps frequency and draws
+    S<sub>11</sub>(f) as a <em>trajectory</em> inside the unit circle; a passive device's trace never
+    leaves the disk. Exact analogue here [T]: the complex value of &Theta;<sub>&omega;</sub>(x+iv) swept
+    in x along the probe line (&omega;=0.05, v=0.05, window around &gamma;*≈98.83). Innerness = the
+    trajectory is caged in the closed unit disk. Green: the true zeros' trace — max |&Theta;| = 0.9935,
+    never escapes. Toggle the planted violation above and the red trace <b>leaves the chart</b>
+    (peak |&Theta;| ≈ 41.8 — the meter pegs and the trajectory shoots off through the boundary over the
+    pole). Sweep = stimulus, trace = response, escape = failed passivity: the full VNA read, on ζ.
+  </p>
+  <div id="vna" class="plot" style="height:420px"></div>
+</div>
+
+<div class="card" style="margin-top:20px">
+  <h2>The VNA workflow — calibration discipline, mapped</h2>
+  <p class="note">The E-series measurement discipline maps step-for-step onto VNA practice. Grades: the trace-confinement row is [T]; workflow rows are [A] — the <em>practice</em> is genuinely shared, the objects differ.</p>
+  <table>
+    <tr><th>VNA bench practice</th><th>This program's practice</th><th>Grade</th></tr>
+    <tr><td>Calibrate against known standards (Short-Open-Load) before trusting any reading</td>
+        <td>Gate G1: reproduce published λ₁ (Keiper–Li) and Paper 14's μ_min table to displayed digits before any endpoint data</td>
+        <td><span class="g gA">A — same discipline, different objects</span></td></tr>
+    <tr><td>Establish noise floor; average sweeps</td>
+        <td>Null ensembles: 20 jittered mass-matched replicates define the detection band (E-LI-1b seeds 6000–6019)</td>
+        <td><span class="g gA">A</span></td></tr>
+    <tr><td>Sweep the stimulus (frequency)</td>
+        <td>Sweep ω, probe height v, window δ, depth n/M — E-LI-1b measured the detection staircase over the (ε, γ*, ω, v) grid</td>
+        <td><span class="g gA">A</span></td></tr>
+    <tr><td>Read the trace: passive ⇔ trajectory stays inside the unit circle</td>
+        <td>Θω(x+iv) swept trace confined to the disk ⇔ innerness on the probe line; escape locates the violating pole (measured law: fires iff ε−ω ≥ v)</td>
+        <td><span class="g gT">T — confinement; Numerics — the law</span></td></tr>
+    <tr><td>De-embed the fixture to isolate the DUT</td>
+        <td>Subtract POLE and ARCH terms from A(m) to isolate the PRIME channel (Paper 14's decomposition)</td>
+        <td><span class="g gA">A</span></td></tr>
+    <tr><td>Certify the device after one calibrated sweep</td>
+        <td>No finite sweep certifies RH — positivity is needed at all depths, windows, and scales</td>
+        <td><span class="g gO">Open — the standing last row</span></td></tr>
+  </table>
+</div>
+
+<div class="card" style="margin-top:20px">
   <h2>The dictionary — graded, row by row</h2>
   <p class="note">Every row carries its epistemic label. [T] theorem / established. [A] analogy — useful language, no mathematical content beyond the stated map. [Open] the open problem itself.</p>
   <table>
@@ -345,7 +386,30 @@ function drawEli1b(){
   }), {displayModeBar:false, responsive:true});
 }
 
-function redraw(){ drawDisk(); drawLi(); drawMu(); drawTheta(); drawEli1b(); }
+function drawVna(){
+  if(!DATA.vna) return;
+  const th = Array.from({length:361},(_,i)=>i*Math.PI/180);
+  const tr = [
+    {x:th.map(Math.cos), y:th.map(Math.sin), mode:'lines',
+     line:{color:C.fg, width:1.6}, name:'|Θ| = 1 (passivity boundary)', hoverinfo:'name'},
+    {x:DATA.vna.true_re, y:DATA.vna.true_im, mode:'lines',
+     line:{color:C.good, width:1.2}, name:'swept trace — true zeros (caged)',
+     text:DATA.vna.x.map(x=>'x = '+x), hoverinfo:'text+name'},
+  ];
+  if(planted){
+    tr.push({x:DATA.vna.pl_re, y:DATA.vna.pl_im, mode:'lines',
+      line:{color:C.bad, width:1.2}, name:'swept trace — planted (ESCAPES, peak ≈ 41.8)',
+      text:DATA.vna.x.map(x=>'x = '+x), hoverinfo:'text+name'});
+  }
+  Plotly.react('vna', tr, Object.assign({}, LAYOUT, {
+    xaxis:Object.assign({},AX,{range:[-1.7,1.7], scaleanchor:'y', title:'Re Θω'}),
+    yaxis:Object.assign({},AX,{range:[-1.7,1.7], title:'Im Θω'}),
+    legend:{x:0.01,y:0.99, font:{size:10.5, family:'IBM Plex Mono'},
+            bgcolor:'rgba(11,14,20,0.75)'}
+  }), {displayModeBar:false, responsive:true});
+}
+
+function redraw(){ drawDisk(); drawLi(); drawMu(); drawTheta(); drawEli1b(); drawVna(); }
 
 document.getElementById('plantBtn').addEventListener('click', ()=>{
   planted = !planted;
