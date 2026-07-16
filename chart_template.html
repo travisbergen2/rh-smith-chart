@@ -124,6 +124,23 @@
 </div>
 
 <div class="card" style="margin-top:20px">
+  <h2>Fourth panel — E-LI-1b: measured detection depths (pre-registered, 12 cells)</h2>
+  <p class="note">
+    The pre-registered experiment E-LI-1b (2026-07-15; thresholds frozen before data; first 2,001,052
+    zeros; mass-matched nulls, seeds 6000–6019; all validity gates passed) planted an off-line quadruple
+    ½±&epsilon;±i&gamma;* in each of 12 cells and measured the depth at which each meter fires.
+    <b>Registered verdict: TOEPLITZ WINS</b> — 11/12 cells resolved, all 11 by the A(m) gauge via genuine
+    indefiniteness (&mu;<sub>min</sub>&lt;0); the Li gauge (differenced statistic) detected in exactly one
+    cell, 14&times; slower. Lines below show the Toeplitz staircase per target height — the measured
+    M<sub>det</sub> &prop; 1/&epsilon; mechanism with a &gamma;*&sup2; height penalty. The lone white
+    diamond is Li's only detection. Cells above the D<sub>max</sub>=2000 line were UNRESOLVED
+    (one: &gamma;*≈1000, &epsilon;=0.01). This panel displays a completed experiment's data; it is not
+    evidence about RH.
+  </p>
+  <div id="eli1b" class="plot" style="height:320px"></div>
+</div>
+
+<div class="card" style="margin-top:20px">
   <h2>The dictionary — graded, row by row</h2>
   <p class="note">Every row carries its epistemic label. [T] theorem / established. [A] analogy — useful language, no mathematical content beyond the stated map. [Open] the open problem itself.</p>
   <table>
@@ -289,7 +306,46 @@ function drawTheta(){
   Plotly.react('theta', tr, layout, {displayModeBar:false, responsive:true});
 }
 
-function redraw(){ drawDisk(); drawLi(); drawMu(); drawTheta(); }
+function drawEli1b(){
+  if(!DATA.eli1b) return;
+  const cells = DATA.eli1b.cells;
+  const gs = [...new Set(cells.map(c=>c.gamma_star))];
+  const cols = [C.good, C.warn, C.accent];
+  const tr = [];
+  gs.forEach((g,i)=>{
+    const cc = cells.filter(c=>c.gamma_star===g && c.N_det_toeplitz!==null)
+                    .sort((a,b)=>a.eps-b.eps);
+    tr.push({x:cc.map(c=>c.eps), y:cc.map(c=>c.N_det_toeplitz),
+      mode:'lines+markers', name:'Toeplitz γ*≈'+Math.round(g),
+      line:{color:cols[i%3], width:1.6}, marker:{size:7, color:cols[i%3]},
+      text:cc.map(c=>'γ*='+g.toFixed(2)+' ε='+c.eps+' → M='+c.N_det_toeplitz),
+      hoverinfo:'text'});
+    // unresolved cells for this gamma: mark at top
+    const un = cells.filter(c=>c.gamma_star===g && c.N_det_toeplitz===null);
+    if(un.length) tr.push({x:un.map(c=>c.eps), y:un.map(_=>DATA.eli1b.D_max),
+      mode:'markers', name:'UNRESOLVED (γ*≈'+Math.round(g)+')',
+      marker:{size:10, symbol:'triangle-up-open', color:cols[i%3]},
+      text:un.map(c=>'γ*='+g.toFixed(2)+' ε='+c.eps+' → unresolved at D_max'),
+      hoverinfo:'text'});
+  });
+  const li = cells.filter(c=>c.N_det_li!==null);
+  tr.push({x:li.map(c=>c.eps), y:li.map(c=>c.N_det_li), mode:'markers',
+    name:'Li (only detection)', marker:{size:11, symbol:'diamond',
+    color:C.fg, line:{color:C.bad, width:1.5}},
+    text:li.map(c=>'Li: γ*='+c.gamma_star.toFixed(2)+' ε='+c.eps+' → n='+c.N_det_li),
+    hoverinfo:'text'});
+  Plotly.react('eli1b', tr, Object.assign({}, LAYOUT, {
+    xaxis:Object.assign({},AX,{title:'planted ε (log)', type:'log'}),
+    yaxis:Object.assign({},AX,{title:'detection depth (log)', type:'log'}),
+    shapes:[{type:'line', xref:'paper', x0:0, x1:1, y0:DATA.eli1b.D_max,
+      y1:DATA.eli1b.D_max, line:{color:C.dim, width:1, dash:'dot'}}],
+    annotations:[{xref:'paper', x:0.995, y:Math.log10(DATA.eli1b.D_max),
+      yanchor:'bottom', xanchor:'right', text:'D_max = '+DATA.eli1b.D_max,
+      font:{color:C.dim, size:10.5, family:'IBM Plex Mono'}, showarrow:false}]
+  }), {displayModeBar:false, responsive:true});
+}
+
+function redraw(){ drawDisk(); drawLi(); drawMu(); drawTheta(); drawEli1b(); }
 
 document.getElementById('plantBtn').addEventListener('click', ()=>{
   planted = !planted;
