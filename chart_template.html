@@ -152,6 +152,10 @@
     (peak |&Theta;| ≈ 41.8 — the meter pegs and the trajectory shoots off through the boundary over the
     pole). Sweep = stimulus, trace = response, escape = failed passivity: the full VNA read, on ζ.
   </p>
+  <div class="controls">
+    <span class="toggle" id="sweepBtn">&#9654; RUN SWEEP</span>
+    <span id="sweepLbl">press to sweep x across the window like a live VNA</span>
+  </div>
   <div id="vna" class="plot" style="height:420px"></div>
 </div>
 
@@ -409,7 +413,67 @@ function drawVna(){
   }), {displayModeBar:false, responsive:true});
 }
 
-function redraw(){ drawDisk(); drawLi(); drawMu(); drawTheta(); drawEli1b(); drawVna(); }
+// ---- VNA sweep animation ----
+let sweepTimer = null, sweepIdx = 0;
+function vnaBaseTraces(withFull){
+  const th = Array.from({length:361},(_,i)=>i*Math.PI/180);
+  const tr = [
+    {x:th.map(Math.cos), y:th.map(Math.sin), mode:'lines',
+     line:{color:C.fg, width:1.6}, name:'|Θ| = 1 (passivity boundary)', hoverinfo:'name'}];
+  if(withFull){
+    tr.push({x:DATA.vna.true_re, y:DATA.vna.true_im, mode:'lines',
+      line:{color:C.good, width:1.2}, name:'swept trace — true zeros (caged)',
+      text:DATA.vna.x.map(x=>'x = '+x), hoverinfo:'text+name'});
+    if(planted) tr.push({x:DATA.vna.pl_re, y:DATA.vna.pl_im, mode:'lines',
+      line:{color:C.bad, width:1.2}, name:'swept trace — planted (ESCAPES, peak ≈ 41.8)',
+      text:DATA.vna.x.map(x=>'x = '+x), hoverinfo:'text+name'});
+  }
+  return tr;
+}
+function stopSweep(){
+  if(sweepTimer){ clearInterval(sweepTimer); sweepTimer=null; }
+  document.getElementById('sweepBtn').textContent='▶ RUN SWEEP';
+  document.getElementById('sweepLbl').textContent='press to sweep x across the window like a live VNA';
+  drawVna();
+}
+function startSweep(){
+  sweepIdx = 0;
+  document.getElementById('sweepBtn').textContent='■ STOP';
+  const N = DATA.vna.x.length, STEP = 4;
+  sweepTimer = setInterval(()=>{
+    sweepIdx += STEP;
+    if(sweepIdx >= N){ stopSweep(); return; }
+    const i = sweepIdx;
+    const tr = vnaBaseTraces(false);
+    // trailing path so far (true; planted if toggled)
+    tr.push({x:DATA.vna.true_re.slice(0,i+1), y:DATA.vna.true_im.slice(0,i+1),
+      mode:'lines', line:{color:C.good, width:1.4}, name:'true — trail', hoverinfo:'skip'});
+    tr.push({x:[DATA.vna.true_re[i]], y:[DATA.vna.true_im[i]], mode:'markers',
+      marker:{color:C.good, size:10, symbol:'circle'}, name:'true — now', hoverinfo:'skip'});
+    if(planted){
+      tr.push({x:DATA.vna.pl_re.slice(0,i+1), y:DATA.vna.pl_im.slice(0,i+1),
+        mode:'lines', line:{color:C.bad, width:1.4}, name:'planted — trail', hoverinfo:'skip'});
+      tr.push({x:[DATA.vna.pl_re[i]], y:[DATA.vna.pl_im[i]], mode:'markers',
+        marker:{color:C.bad, size:10, symbol:'x'}, name:'planted — now', hoverinfo:'skip'});
+    }
+    document.getElementById('sweepLbl').textContent =
+      'x = '+DATA.vna.x[i].toFixed(2)+'   |Θ|true = '+
+      Math.hypot(DATA.vna.true_re[i],DATA.vna.true_im[i]).toFixed(4)+
+      (planted? '   |Θ|planted = '+Math.hypot(DATA.vna.pl_re[i],DATA.vna.pl_im[i]).toFixed(2):'');
+    Plotly.react('vna', tr, Object.assign({}, LAYOUT, {
+      xaxis:Object.assign({},AX,{range:[-1.7,1.7], scaleanchor:'y', title:'Re Θω'}),
+      yaxis:Object.assign({},AX,{range:[-1.7,1.7], title:'Im Θω'}),
+      showlegend:false
+    }), {displayModeBar:false, responsive:true});
+  }, 30);
+}
+document.addEventListener('DOMContentLoaded', ()=>{});
+setTimeout(()=>{
+  const b = document.getElementById('sweepBtn');
+  if(b) b.addEventListener('click', ()=>{ sweepTimer ? stopSweep() : startSweep(); });
+}, 0);
+
+function redraw(){ drawDisk(); drawLi(); drawMu(); drawTheta(); drawEli1b(); if(!sweepTimer) drawVna(); }
 
 document.getElementById('plantBtn').addEventListener('click', ()=>{
   planted = !planted;

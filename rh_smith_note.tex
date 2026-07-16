@@ -14,11 +14,11 @@
 
 \title{A Smith Chart for the Riemann Hypothesis:\\
 \large The Cayley--Li Disk as a Unified Instrument Panel for Circle-Side Positivity\\[4pt]
-\normalsize IMM Open Series --- companion note to Paper 14 (number to be assigned)}
+\normalsize IMM Paper 18 --- Open Series (companion note to Paper 14)}
 \author{Travis Bergen\thanks{Independent researcher. ORCID 0009-0009-3950-8390.
 Prepared with agent assistance; all numerical claims reproducible from the committed
 scripts described in Appendix~\ref{app:repro}.}}
-\date{July 15, 2026 --- v0.2 draft (adds $\Theta_\omega$ meter row and E-LI-1b results)}
+\date{July 15, 2026 --- v0.3 draft (adds VNA mode; numbered Paper 18)}
 
 \begin{document}
 \maketitle
@@ -220,6 +220,32 @@ Instrument conclusion at earned grade: for violation \emph{detection} at these d
 $\delta=0.05$, the Toeplitz meter is decisively the more sensitive instrument, measured
 twice under two null designs; the Li meter's weakness is a property of its global statistic,
 not of the Li encoding as mathematics. None of this bears on the truth of RH.
+
+\section{VNA mode: the swept trace and the calibration workflow}
+
+The Smith chart is a display; the instrument built around it is the vector network
+analyzer, and the analogy extends to the \emph{workflow}. A VNA sweeps frequency and draws
+the reflection coefficient $S_{11}(f)$ as a trajectory in the disk; passivity of the device
+under test is read as \emph{confinement of the trace}. The exact analogue here \gr{T}: the
+complex value of $\Theta_\omega(x+iv)$ swept in $x$ along a probe line. Innerness of
+$\Theta_\omega$ is precisely the statement that every such trace is caged in the closed
+unit disk. Computed from the charted zeros ($\omega=v=0.05$, window around
+$\gamma^*\approx98.83$): the true-zero trace reaches $\max|\Theta_\omega|=0.9935$ and never
+escapes; with the planted quadruple ($\varepsilon=0.1$) the trajectory exits through the
+boundary above the violating pole and peaks at $|\Theta_\omega|\approx41.8$ --- the meter
+pegs and the trace leaves the chart \gr{Numerics}. E-LI-1b measured the escape law:
+detection iff $\varepsilon-\omega\ge v$, i.e.\ the pole must reach the probe line; the
+gauge is local in both probe coordinates.
+
+The calibration discipline also maps step for step, at grade \gr{A} (shared practice,
+different objects): short--open--load calibration against known standards $\leftrightarrow$
+gate G1 (reproduce published $\lambda_1$ and Paper 14's $\mu_{\min}$ table to displayed
+digits before any endpoint data); noise-floor averaging $\leftrightarrow$ the mass-matched
+jittered null ensembles; the stimulus sweep $\leftrightarrow$ the
+$(\varepsilon,\gamma^*,\omega,v)$ grid; de-embedding the fixture $\leftrightarrow$
+subtracting the POLE and ARCH channels of $A(m)$ to isolate the PRIME channel. The
+disanalogy is the standing last row of the dictionary: one calibrated sweep certifies a
+physical device; no finite sweep certifies RH \gr{Open}.
 
 \section{Prior art and what is and is not new}
 
